@@ -33,10 +33,18 @@ tokenized_datasets = load_dataset(
     data_files='/content/TRAIN_DATA.csv'
 )
 tokenized_datasets.column_names
-tokenized_datasets = raw_datasets["train"]
+tokenized_datasets = tokenized_datasets["train"]
 
 
-tokenized_datasets = tokenized_datasets.map(tokenize_function, num_proc=4, batched=True)
+
+tokenized_datasets = tokenized_datasets.map(tokenize_function, batched=True)
 tokenized_datasets = tokenized_datasets.remove_columns(["text"])
+tokenized_datasets = tokenized_datasets.map(
+    group_texts,
+    batched=True,
+    batch_size=8,
+    num_proc=4,
+)
 tokenized_datasets.set_format("torch")
-train_dataloader = DataLoader(lm_datasets, shuffle=True, batch_size=32)
+
+train_dataloader = DataLoader(tokenized_datasets, shuffle=True, batch_size=32)
