@@ -1,15 +1,17 @@
 
 from tqdm.auto import tqdm
 from transformers import get_scheduler
+from accelerate import Accelerator
 
 from torch.optim import AdamW
 
+accelerator  = Accelerator()
+device = accelerator.device
+optimizer = AdamW(model.parameters(), lr=1e-5)
+model, optimizer, train_dataloader = accelerator.prepare(model, optimizer, train_dataloader)
 
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-model.to(device)
 
-optimizer = AdamW(model.parameters(), lr=5e-5)
-num_epochs = 3
+num_epochs = 10
 num_training_steps = num_epochs * len(train_dataloader)
 
 lr_scheduler = get_scheduler(
@@ -28,7 +30,7 @@ for epoch in range(num_epochs):
         batch = {k: v.to(device) for k, v in batch.items()}
         outputs = model(**batch)
         loss = outputs.loss
-        loss.backward()
+        accelerator.backward(loss)
 
         optimizer.step()
         lr_scheduler.step()
