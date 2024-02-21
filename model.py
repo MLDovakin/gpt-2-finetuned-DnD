@@ -23,21 +23,4 @@ model.enable_input_require_grads()
 model = get_peft_model(model, config)
 model = prepare_model_for_int8_training(model)
 
-from peft import PromptEmbedding, PromptTuningConfig, get_peft_model
 
-config = PromptTuningConfig(
-    peft_type="PROMPT_TUNING",
-    task_type="CAUSAL_LM",
-    num_virtual_tokens=20,
-    token_dim=512,
-    num_transformer_submodules=1,
-    num_attention_heads=12,
-    num_layers=12,
-    prompt_tuning_init="TEXT",
-    prompt_tuning_init_text="Predict if sentiment of this review is positive, negative or neutral",
-    tokenizer_name_or_path="ai-forever/rugpt3medium_based_on_gpt2",
-)
-
-model.enable_input_require_grads()
-model = get_peft_model(model, config)
-model.enable_input_require_grads()
