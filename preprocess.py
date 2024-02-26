@@ -20,7 +20,7 @@ def group_texts(examples):
 
 
 def tokenize_function(examples):
-    return tokenizer(examples["text"], padding='max_length',max_length=70, truncation=True)
+    return tokenizer(examples["text"], padding='max_length',max_length=512, truncation=True)
 
 
 train_df = open('/content/TRAIN_DATA.txt').read().split('.')
