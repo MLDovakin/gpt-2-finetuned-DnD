@@ -3,6 +3,7 @@ import pandas as pd
 from datasets import load_dataset
 from torch.utils.data import DataLoader
 
+block_size =32
 
 def group_texts(examples):
     concatenated_examples = {k: sum(examples[k], []) for k in examples.keys()}
