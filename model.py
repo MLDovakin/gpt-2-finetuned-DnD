@@ -10,13 +10,16 @@ model_name_or_path = "ai-forever/rugpt3medium_based_on_gpt2"
 tokenizer = GPT2Tokenizer.from_pretrained(model_name_or_path)
 model = GPT2LMHeadModel.from_pretrained(model_name_or_path).to(DEVICE)
 
+
 config = LoraConfig(
-    r=16,
+    r=8,
     lora_alpha=32,
     lora_dropout=0.05,
     bias="none",
-    task_type="CAUSAL_LM"
+    task_type="CAUSAL_LM",
+    modules_to_save=["wte", "lm_head"]
 )
+
 config.inference_mode = False
 
 model.enable_input_require_grads()
