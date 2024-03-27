@@ -1,6 +1,6 @@
 
 from tqdm.auto import tqdm
-from transformers import get_scheduler
+from transformers import get_linear_schedule_with_warmup
 from accelerate import Accelerator
 
 from torch.optim import AdamW
@@ -14,8 +14,8 @@ model, optimizer, train_dataloader = accelerator.prepare(model, optimizer, train
 num_epochs = 10
 num_training_steps = num_epochs * len(train_dataloader)
 
-lr_scheduler = get_scheduler(
-    name="linear", optimizer=optimizer, num_warmup_steps=4000, num_training_steps=num_training_steps
+lr_scheduler = get_linear_schedule_with_warmup(
+   optimizer=optimizer, num_warmup_steps=4000, num_training_steps=num_training_steps
 )
 
 progress_bar = tqdm(range(num_training_steps))
