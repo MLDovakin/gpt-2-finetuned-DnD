@@ -31,7 +31,9 @@ for epoch in range(num_epochs):
         outputs = model(**batch)
         loss = outputs.loss
         accelerator.backward(loss)
-
+       
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1)
+       
         optimizer.step()
         lr_scheduler.step()
         optimizer.zero_grad()
