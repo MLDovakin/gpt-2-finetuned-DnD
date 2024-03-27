@@ -7,7 +7,7 @@ from torch.optim import AdamW
 
 accelerator  = Accelerator()
 device = accelerator.device
-optimizer = AdamW(model.parameters(), lr=1e-5)
+optimizer = AdamW(model.parameters(), lr=1e-3)
 model, optimizer, train_dataloader = accelerator.prepare(model, optimizer, train_dataloader)
 
 
@@ -15,7 +15,7 @@ num_epochs = 10
 num_training_steps = num_epochs * len(train_dataloader)
 
 lr_scheduler = get_scheduler(
-    name="linear", optimizer=optimizer, num_warmup_steps=0, num_training_steps=num_training_steps
+    name="linear", optimizer=optimizer, num_warmup_steps=4000, num_training_steps=num_training_steps
 )
 
 progress_bar = tqdm(range(num_training_steps))
